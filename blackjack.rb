@@ -1,4 +1,4 @@
-require 'pry'
+# require 'pry'
 
 def initial_cards(num_decks)
 	cards = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'].product(['clubs', 'spades','hearts','diamonds']) * num_decks
