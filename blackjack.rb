@@ -4,7 +4,8 @@ def initial_cards(num_decks)
 	cards = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'].product(['clubs', 'spades','hearts','diamonds']) * num_decks
 end
 
-
+# If dealer is true, the second card of dealers' will be hidden to player at first round.
+# By default we set dealer to false so that player can see every card.
 def show_cards(person_cards, dealer = false)
 
 	person_cards.length.times do
@@ -64,6 +65,7 @@ def show_on_table(dealer_cards,player_cards, dealer_name, player_name, dealer)
 	show_cards(player_cards)
 end
 
+# RULES is temporarily left blank to save some space.
 def greeting_rules
 	show_message("Welcome to BlackJack, I am your dealer today, Jack Black. May I know your name?")
 	dealer_name = "Jack Black"
@@ -111,6 +113,8 @@ def calculate_value(cards, max = 21)
 							end
 	if value > max
 		# binding.pry
+# If value is bigger than max, go to check if it is soft or hard.
+# cards contain Ace might be soft, re-calculate value against max.
 		ace_cards = cards.select{|card| card[0] == 'A'}
 		if ace_cards.empty?
 			return value
@@ -131,12 +135,13 @@ def deliver_cards(person_cards, cards)
 	person_cards.push(cards.pop)
 end
 
-def bust?(person_cards, max = 21)
-	(calculate_value(person_cards) <= max)? false : true
+def bust?(person_cards, bj_max = 21)
+	(calculate_value(person_cards) <= bj_max)? false : true
 end
 
-def dealer_hits?(dealer_cards, max = 17)
-	(calculate_value(dealer_cards) < max)? true : false 
+# Dealer needs to decide if or not to get the next cards, always to see whether value on hand bigger than 17.
+def dealer_hits?(dealer_cards, dealer_max = 17)
+	(calculate_value(dealer_cards) < dealer_max)? true : false 
 end
 
 def player_hits_bust?(player_cards,cards)
