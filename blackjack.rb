@@ -50,6 +50,7 @@ def show_cards(person_cards, dealer = false)
   print " ----- "
   end
   puts
+
 end
 
 def show_message(message)
@@ -61,8 +62,10 @@ end
 def show_on_table(dealer_cards,player_cards, dealer_name, player_name, dealer)
   show_message("#{dealer_name}'s cards")
   show_cards(dealer_cards, dealer)
+  show_message("#{dealer_name} got #{calculate_value(dealer_cards)}.") if !dealer
   show_message("#{player_name}'s cards")
   show_cards(player_cards)
+  show_message("#{player_name} got #{calculate_value(player_cards)}.")
 end
 
 # RULES is temporarily left blank to save some space.
@@ -136,18 +139,18 @@ def deliver_cards(person_cards, cards)
 end
 
 def bust?(person_cards, bj_max = 21)
-  (calculate_value(person_cards) <= bj_max)? false : true
+  (calculate_value(person_cards) <= bj_max) ? false : true
 end
 
 # Dealer needs to decide if or not to get the next cards, always to see whether value on hand bigger than 17.
 def dealer_hits?(dealer_cards, dealer_max = 17)
-  (calculate_value(dealer_cards) < dealer_max)? true : false 
+  (calculate_value(dealer_cards) < dealer_max) ? true : false 
 end
 
 def player_hits_bust?(player_cards,cards)
   deliver_cards(player_cards,cards)
   # binding.pry
-  bust?(player_cards)? true : false
+  bust?(player_cards) ? true : false
 end
 
 def player_stands(dealer_cards,cards)
@@ -194,16 +197,16 @@ def game_start(dealer_name, player_name)
   while true
     show_on_table(dealer_cards, player_cards, dealer_name, player_name, true)
 
-    show_message("would you like to hit or stand?(hit/stand)")
+    show_message("would you like to hit or stand?(h/s)")
 
     case gets.chomp.downcase
-    when 'hit'
+    when 'h'
       break if player_hits_bust?(player_cards,cards)
-    when 'stand'
+    when 's'
       player_stands(dealer_cards,cards)
       break
     else
-      show_message("sorry? input 'hit' to hit 'stand' to stand")
+      show_message("sorry? input 'h' to hit 's' to stay")
     end
   end
   winner_cards, loser_cards, winner = who_is_winner?(player_cards,dealer_cards)
